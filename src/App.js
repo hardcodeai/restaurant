@@ -1,25 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { ApolloProvider } from '@apollo/client';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import client from './apollo';
 
-function App() {
+import RestaurantSearch from './components/RestaurantSearch';
+import RestaurantDetails from './components/RestaurantDetails';
+import Cart from './components/Cart';
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ApolloProvider client={client}>
+      <Router>
+        <Switch>
+          <Route exact path="/" component={RestaurantSearch} />
+          <Route path="/restaurant/:id" component={RestaurantDetails} />
+          <Route path="/cart" component={Cart} />
+        </Switch>
+      </Router>
+    </ApolloProvider>
   );
-}
+};
 
 export default App;
