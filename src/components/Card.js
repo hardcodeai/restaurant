@@ -18,7 +18,7 @@ export default function RecipeReviewCard({source}) {
                     component="img"
                     height="194"
                     image={source}
-                    alt="salad dish"
+                    alt="dish"
                 />
                 </Card>
         </Grid>

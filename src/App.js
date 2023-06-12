@@ -14,7 +14,7 @@ const App = () => {
         <Switch>
           <Route exact path="/" component={RestaurantSearch} />
           <Route path="/restaurant/:id" component={RestaurantDetails} />
-          <Route path="/cart" component={Cart} />
+          <Route path="/cart/:id" component={Cart} />
         </Switch>
       </Router>
     </ApolloProvider>
