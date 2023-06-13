@@ -15,7 +15,7 @@ import Link from './Link';
 
 export default function RestaurantCard({restaurant = {}}) {
   return (
-    <Grid item xs={12} md={3} style={{padding:'1rem',borderRadius:'1rem'}} onClick={()=>console.log(`clicked ${restaurant._id}`)}>
+    <Grid item xs={12} md={3} style={{padding:'1rem',borderRadius:'1rem'}}>
         <Link to={`/restaurant/${restaurant._id}`}>
             <Card sx={{ maxWidth: 345 }}>
             <CardMedia

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -7,21 +7,10 @@ import Card from './Card'
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import { Button, ListItem } from '@mui/material';
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery,useLazyQuery, useMutation } from '@apollo/client';
 import { gql } from '@apollo/client';
 import RestaurantCard from './RestaurantCard';
 import { Link } from 'react-router-dom';
-
-
-const cartId = '6485deaa180c08a582a91d47'
-
-function CartButton() {
-  return (
-    <Link to={`/cart/${cartId}`}>
-      <Button variant='text' color='secondary'>Go to Cart</Button>
-    </Link>
-  );
-}
 
 const SEARCH_RESTAURANTS = gql`
   query SearchRestaurants($query: String!) {
@@ -31,19 +20,6 @@ const SEARCH_RESTAURANTS = gql`
     }
   }
 `;
-
-
-{/* <List sx={{width: '80%'}}>{
-        results.map((item) => 
-          <ListItem>
-            <h1 key={item}>{JSON.stringify(item)}</h1> 
-            <RestaurantCard restaurant={item}/>
-            <Divider/>
-          </ListItem>
-        )
-      }
-      </List> 
-   */}
 
 const restaurantsNearYou = ["/pizza.jpg","/salad.jpg","/coffee.jpg","/cake.jpg"];
 const NearbyRestaurantList = () => {
@@ -74,28 +50,54 @@ const Results = ({searchKey,results}) => {
 
 const RestaurantSearch = () => {
   // const [results,setResults] = useState([])
-  const [searchKey,setSearchKey] = useState('')
+  // const [searchKey, setSearchKey] = useState('');
+  const [fetching, setFetching] = useState(false);
+  const [results,setResults] = useState([])
+  // const [searchRestaurants, { loading, error, data: { searchRestaurants: results = [] } = {} }] = useLazyQuery(SEARCH_RESTAURANTS);
 
-  const hChange = (e) => {
-    const {value} = e.target
-    setSearchKey(value)
-    // setResults([value,value,value])
-  }
+  // const handleSearch = () => {
+  //   setFetching(true);
+  //   searchRestaurants({ variables: { query: searchKey } });
+  // };
 
-  const { loading, error, data:{searchRestaurants:results = []}={}} = useQuery(SEARCH_RESTAURANTS, {
-    variables: { query: searchKey }, // Pass the necessary variables
+  // const handleInputChange = (e) => {
+  //   setSearchKey(e.target.value);
+  // };
+
+  // // Reset the fetching state to false when the search is complete
+  // React.useEffect(() => {
+  //   if (!loading) {
+  //     setFetching(false);
+  //   }
+  // }, [loading]);
+
+
+  const [searchKey, setSearchKey] = useState('');
+  const { loading, error, data, refetch } = useQuery(SEARCH_RESTAURANTS, {
+    skip: true,
   });
 
+  const handleSearch = async () => {
+    setFetching(true);
+    const {data : { searchRestaurants: results = [] }} = await refetch({ query: searchKey });
+    setResults(results)
+    setFetching(false)
+  };
+
+  const handleInputChange = (e) => {
+    setSearchKey(e.target.value);
+  };
+  
   // if (loading) return <p>Loading...</p>;
   // if (error) return <p>Error :(</p>;
 
   // Implement the component to search for restaurants
   return (
   <Grid container>
-    <Grid item container xs={12} style={{position:'absolute',top:0,left:'90vw'}}>
-      <CartButton/>
-    </Grid>
     <Grid container item xs={12} height={'70vh'}>
+    {/* <Grid item container xs={12} style={{position:'absolute',top:0, left:'90vw'}}>
+      <CartButton/>
+    </Grid> */}
       <Grid item container xs={12} md={6} alignItems={'center'} justifyContent={'center'}>
         <Grid item xs={8}>
           <Box sx={{ width: '100%', maxWidth: 500 }}>
@@ -107,7 +109,8 @@ const RestaurantSearch = () => {
             </Typography>
           </Box>
           <Input placeholder="Search Your Craving :)" inputProps={{ 'aria-label': 'description' }} 
-          fullWidth={true} onChange={hChange}/>
+          fullWidth={true} onChange={handleInputChange}/>
+          <Button variant='contained' color='secondary' onClick={handleSearch} style={{position:'relative',top:'1rem'}}>Search</Button>
         </Grid>
       </Grid>
       <Grid item container xs={12} md={6}>
@@ -115,8 +118,8 @@ const RestaurantSearch = () => {
       </Grid>
     </Grid>   
     <Grid container item xs={12} justifyContent={'center'}>
-    <Grid item container style={{background:'#7c7a7a', width:'90%', opacity:'90%',borderRadius:'2rem',position:'relative',top:'-3rem',ovreflow:'scroll'}}>
-      {Boolean(searchKey) ? <Results {...{searchKey,results:results || []}}/> : <NearbyRestaurantList/>}
+    <Grid item container xs={10} style={{background:'#7c7a7a', opacity:'90%',borderRadius:'2rem',position:'relative',top:'-3rem'}}>
+      {Boolean(results.length) ? <Results {...{searchKey,results:results || []}}/> : <NearbyRestaurantList/>}
     </Grid>
     </Grid>   
   </Grid>
