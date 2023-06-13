@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, IconButton, Button } from '@mui/material';
-import { AccountCircle, ShoppingCart } from '@mui/icons-material';
+import { ShoppingCart } from '@mui/icons-material';
 import Grid from '@mui/material/Grid';
 import { useDispatch,useSelector } from 'react-redux';
-import { useQuery, useMutation, gql } from '@apollo/client';
+import { useQuery, gql } from '@apollo/client';
 
 const GET_CART = gql`
   query GetCart($userId: ID) {

@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import {Grid, Container, Typography, Table, TableContainer, TableHead, TableBody, TableRow, TableCell, Paper, Button } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { RemoveCircle,AddCircle } from '@mui/icons-material';
-import { useDispatch,useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const GET_CART = gql`
   query GetCart($cartId: ID!) {
@@ -30,7 +30,6 @@ const UPDATE_ITEM_QUANTITY = gql`
 export default function Cart() {
   const cartId = useHistory().location.pathname.split('/')[2];
   const history = useHistory();
-  // const dispatch = useDispatch();
   const userId = useSelector((state) => state.user.userId);
 
   const { loading, error, data } = useQuery(GET_CART, {

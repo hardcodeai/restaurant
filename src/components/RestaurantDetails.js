@@ -1,9 +1,7 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import Grid from '@mui/material/Grid';
 import { useHistory } from 'react-router-dom';
 import { useQuery, gql } from '@apollo/client';
-import List  from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import { Typography } from '@mui/material';
 import Card from './Card';
 import { useSelector } from 'react-redux';
@@ -22,15 +20,6 @@ query GetRestaurantDetails($restaurantId: ID!) {
   }
 }
 `;
-//Should fetch restaurant details as we land on this page
-//if there is no restaurant id in the url, redirect to 404 page -- should introduce error boundry, 
-//controllers 
-//restaurant should have a restaurant image as banner 
-//restaurant name
-//restaurant address
-//menu of the retaurant
-//restaurant reviews
-//restaurant rating
 
 const RestaurantDetails = () => {
   const restaurantId = useHistory().location.pathname.split('/')[2];
@@ -46,7 +35,6 @@ const RestaurantDetails = () => {
     return ~index ? `${cartData.items[index].quantity} in cart` :`${dish.name} - ₹${dish.price}`
   }
 
-  // Implement the component to display restaurant details
   return <Grid container>
     <Grid item style={{paddingTop:'1rem',paddingLeft:'1rem'}}>
       <Typography variant="h1">{getRestaurantDetails.name}</Typography>

@@ -13,7 +13,6 @@ const root = ReactDOM.createRoot(rootElement);
 root.render(
   <ThemeProvider theme={theme}>
     <Provider store={store}>
-    {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
     <CssBaseline />
     <App />
     </Provider>
