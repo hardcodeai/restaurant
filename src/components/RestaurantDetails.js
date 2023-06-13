@@ -17,6 +17,7 @@ query GetRestaurantDetails($restaurantId: ID!) {
       _id
       name
       price
+      image
     }
   }
 }
@@ -42,7 +43,7 @@ const RestaurantDetails = () => {
 
   const getContent = (dish) => {
     let index = (cartData || []).items.map(p=>p.menuItemId).indexOf(dish._id)
-    return ~index ? `${cartData.items[index].quantity} in cart` :`${dish.name} - ${dish.price} rupees`
+    return ~index ? `${cartData.items[index].quantity} in cart` :`${dish.name} - ₹${dish.price}`
   }
 
   // Implement the component to display restaurant details
@@ -57,7 +58,8 @@ const RestaurantDetails = () => {
         </Grid>
         <Grid item container xs={12} style={{paddingTop:'1rem',margin:'2rem'}}>
           {(getRestaurantDetails.dishes || []).map((dish) => {
-            return <Card key={dish._id} source={dish._id} content={getContent(dish)}/>
+            console.log(dish)
+            return <Card key={dish._id} source={dish.image} content={getContent(dish)} item={dish}/>
           })}
         </Grid>
       </Grid>

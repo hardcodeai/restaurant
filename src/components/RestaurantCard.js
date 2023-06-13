@@ -14,10 +14,11 @@ import Link from './Link';
 
 
 export default function RestaurantCard({restaurant = {}}) {
+  console.log(restaurant)
   return (
-    <Grid item xs={12} md={3} style={{padding:'1rem',borderRadius:'1rem'}}>
+    <Grid item xs={12} md={3} style={{padding:'1rem',borderRadius:'2rem'}}>
         <Link to={`/restaurant/${restaurant._id}`}>
-            <Card sx={{ maxWidth: 345 }}>
+            <Card>
             <CardMedia
                 sx={{ height: 140 }}
                 image={restaurant.image || 'https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg'}

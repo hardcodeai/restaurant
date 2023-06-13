@@ -119,9 +119,10 @@ export default function Cart() {
         </Table>
       </TableContainer>
       <Grid item container xs={12} spacing={2} style={{marginTop:'1rem'}} justifyContent={'flex-end'}>
-        <Button variant="contained" color="primary">
+        <Button variant="contained" color="primary" onClick={calculateTotalBill}>
           Place Order
         </Button>
+        <Typography variant='h6' style={{paddingLeft:'1rem'}}>{`Total Bill: ₹${calculateTotalBill()}`}</Typography>
       </Grid>
       </>
        :

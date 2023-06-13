@@ -17,31 +17,53 @@ const SEARCH_RESTAURANTS = gql`
     searchRestaurants(query: $query) {
       _id
       name
+      image
     }
   }
 `;
 
-const restaurantsNearYou = ["/pizza.jpg","/salad.jpg","/coffee.jpg","/cake.jpg"];
+const restaurantsNearYou = [
+  {
+    _id:"64884c3ddfe5e001b06a8367",
+    name: 'The Cheesecake Factory',
+    image: 'https://generatorfun.com/code/uploads/Random-Restaurant-image-11.jpg',
+  },
+  {
+    _id:"64884c3ddfe5e001b06a8368",
+    name: "Chili's",
+    image: 'https://generatorfun.com/code/uploads/Random-Restaurant-image-15.jpg',
+  },
+  {
+    _id:"64884c3ddfe5e001b06a8369",
+    name: 'Olive Garden',
+    image: 'https://generatorfun.com/code/uploads/Random-Restaurant-image-19.jpg',
+  },
+  {
+    _id:"64884c3ddfe5e001b06a836a",
+    name: 'Red Lobster',
+    image: 'https://generatorfun.com/code/uploads/Random-Restaurant-image-1.jpg',
+  }
+];
 const NearbyRestaurantList = () => {
 return <>
       <Typography variant="h6" style={{position:'relative','top':'1rem',left:'2rem',color:'#FFEF00'}}> Restaurants near you</Typography>
         <Grid item container xs={12} justifyContent={'center'} style={{padding:'1rem',opacity:'100%'}}>
           {restaurantsNearYou.map((item) => {
-            return <Card key={item} source={item}/>
+            return <RestaurantCard key={item} restaurant={item}/>
           })}
         </Grid>
   </>
 }
 
 const Results = ({searchKey,results}) => {
-  return <div>
+  return <div style={{width:'inherit'}}>
       <Typography variant="h6" style={{position:'relative','top':'1rem',left:'2rem',color:'#FFEF00'}}>{`You're looking for ${searchKey} today`}</Typography>
       {
         Boolean(!results.length) ?  
           <Typography variant="h6" style={{position:'relative',top:'2rem',left:'2rem',color:'#7c7a7a'}}>Nothing found</Typography>
       : <Grid item container xs={12} justifyContent={'center'} style={{padding:'1rem',opacity:'100%'}}>
           {results.map((item) => {
-            return <RestaurantCard restaurant={item}/>
+            return <RestaurantCard key={item} restaurant={item}/>
           })}
         </Grid>
     }

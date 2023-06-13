@@ -20,7 +20,7 @@ const ADD_TO_CART_MUTATION = gql`
   }
 `;
 
-export default function RecipeReviewCard({source,content}) {
+export default function RecipeReviewCard({source,content,item}) {
     const cartId = useSelector((state) => state.cart.cartId);
     const userId = useSelector((state) => state.user.userId);
     const [addToCart] = useMutation(ADD_TO_CART_MUTATION);
@@ -36,7 +36,7 @@ export default function RecipeReviewCard({source,content}) {
         const data = {
             cartId,
             userId,
-            menuItemId: source,
+            menuItemId: item._id,
         }
 
         console.log(data)
