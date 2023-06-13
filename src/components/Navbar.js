@@ -5,6 +5,7 @@ import { ShoppingCart } from '@mui/icons-material';
 import Grid from '@mui/material/Grid';
 import { useDispatch,useSelector } from 'react-redux';
 import { useQuery, gql } from '@apollo/client';
+import { enqueueSnackbar } from 'notistack';
 
 const GET_CART = gql`
   query GetCart($userId: ID) {
@@ -30,15 +31,16 @@ const Navbar = ({ isLoggedIn }) => {
         dispatch({ type: 'SET_USER_LOGIN', payload: true });
         dispatch({ type: 'SET_USER_ID', payload: userId });
         const {data} = await refetch({userId});
-        console.log(data.getCart._id,"this be the data")
         dispatch({ type: 'SET_CART_ID', payload: data.getCart._id })
+        enqueueSnackbar('Logged in successfully', { variant: 'success' });
     };
 
     const { loading, error, data, refetch} = useQuery(GET_CART, {
         variables: { cartId },
         skip: !cartId || !userId
     });
-    
+
+    if(loading) enqueueSnackbar('Loading cart...', { variant: 'info' });
     
     return (
         <AppBar position="static">

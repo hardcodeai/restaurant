@@ -3,7 +3,8 @@ import { ApolloProvider } from '@apollo/client';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import client from './apollo';
 import Navbar from './components/Navbar';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { SnackbarProvider } from 'notistack';
 
 
 import RestaurantSearch from './components/RestaurantSearch';
@@ -15,7 +16,8 @@ const App = () => {
   // const dispatch = useDispatch({ type: '' });
 
   return (
-    <ApolloProvider client={client}>     
+    <ApolloProvider client={client}>    
+      <SnackbarProvider maxSnack={3}> 
         <Router>
         <Navbar {...{isLoggedIn}}/>
           <Switch>
@@ -24,6 +26,7 @@ const App = () => {
             <Route path="/cart/:id" component={Cart} />
           </Switch>
         </Router>
+        </SnackbarProvider>.
     </ApolloProvider>
   );
 };

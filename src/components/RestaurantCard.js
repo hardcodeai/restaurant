@@ -7,7 +7,6 @@ import Grid from '@mui/material/Grid';
 import Link from './Link';
 
 export default function RestaurantCard({restaurant = {}}) {
-  console.log(restaurant)
   return (
     <Grid item xs={12} md={3} style={{padding:'1rem',borderRadius:'2rem'}}>
         <Link to={`/restaurant/${restaurant._id}`}>

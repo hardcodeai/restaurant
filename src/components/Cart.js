@@ -4,6 +4,7 @@ import {Grid, Container, Typography, Table, TableContainer, TableHead, TableBody
 import IconButton from '@mui/material/IconButton';
 import { RemoveCircle,AddCircle } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
+import { enqueueSnackbar } from 'notistack';
 
 const GET_CART = gql`
   query GetCart($cartId: ID!) {
@@ -38,31 +39,22 @@ export default function Cart() {
     variables: { cartId }
   });
 
-  console.log(data,"this is the data")
-
   const [updateItemQuantity] = useMutation(UPDATE_ITEM_QUANTITY);
 
-  if (loading) {
-    return <p>Loading cart...</p>;
-  }
-
-  if (error) {
-    return <p>Error fetching cart: {error.message}</p>;
-  }
+  if(loading) enqueueSnackbar('Loading cart...', { variant: 'info' });
+  if(error) enqueueSnackbar('Error loading cart', { variant: 'error' });
 
   const { getCart:{items = []} = {} } = data || {};
-
-  console.log(items,"this is the items")
 
   const handleQuantityChange = ({action, itemId, quantity}) => {
     updateItemQuantity({
       variables: { cartId, menuItemId: itemId, quantity },
       refetchQueries: [{ query: GET_CART, variables: { cartId } }],
     }).then((response) => {
-      console.log('Item added to cart:', response.data.addToCart);
+      enqueueSnackbar('Item updated in cart', {variant:'success'});
     })
     .catch((error) => {
-      console.error('Error adding item to cart:', error);
+      enqueueSnackbar('Error updating item in cart', {variant:'error'});
     });
   };
 

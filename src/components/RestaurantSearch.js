@@ -7,6 +7,7 @@ import { Button } from '@mui/material';
 import { useQuery} from '@apollo/client';
 import { gql } from '@apollo/client';
 import RestaurantCard from './RestaurantCard';
+import { enqueueSnackbar } from 'notistack';
 
 const SEARCH_RESTAURANTS = gql`
   query SearchRestaurants($query: String!) {
@@ -72,6 +73,9 @@ const RestaurantSearch = () => {
   const { loading, error, data, refetch } = useQuery(SEARCH_RESTAURANTS, {
     skip: true,
   });
+
+  if(loading) return enqueueSnackbar('Loading...', { variant: 'info' });
+  if(error) return enqueueSnackbar(`Error! ${error.message}`, { variant: 'error' });
 
   const handleSearch = async () => {
     setFetching(true);

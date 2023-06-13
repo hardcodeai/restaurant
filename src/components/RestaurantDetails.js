@@ -5,6 +5,7 @@ import { useQuery, gql } from '@apollo/client';
 import { Typography } from '@mui/material';
 import Card from './Card';
 import { useSelector } from 'react-redux';
+import { enqueueSnackbar } from 'notistack';
 
 const GET_RESTAURANT_DETAILS = gql`
 query GetRestaurantDetails($restaurantId: ID!) {
@@ -30,6 +31,8 @@ const RestaurantDetails = () => {
       skip: !restaurantId
     });
 
+    if(loading) enqueueSnackbar('Loading restaurant details...',{variant:'info'});
+
   const getContent = (dish) => {
     let index = (cartData || []).items.map(p=>p.menuItemId).indexOf(dish._id)
     return ~index ? `${cartData.items[index].quantity} in cart` :`${dish.name} - ₹${dish.price}`
@@ -46,7 +49,6 @@ const RestaurantDetails = () => {
         </Grid>
         <Grid item container xs={12} style={{paddingTop:'1rem',margin:'2rem'}}>
           {(getRestaurantDetails.dishes || []).map((dish) => {
-            console.log(dish)
             return <Card key={dish._id} source={dish.image} content={getContent(dish)} item={dish}/>
           })}
         </Grid>

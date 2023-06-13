@@ -5,6 +5,7 @@ import Grid from '@mui/material/Grid';
 import { Button, CardActions, CardContent, Paper } from '@mui/material';
 import { useMutation, gql } from '@apollo/client';
 import { useDispatch, useSelector } from 'react-redux';
+import { enqueueSnackbar } from 'notistack';
 
 
 const ADD_TO_CART_MUTATION = gql`
@@ -24,7 +25,7 @@ export default function RecipeReviewCard({source,content,item}) {
 
     const handleAddToCart = () => {
         if(!cartId || !userId) {
-            console.log('Please login to add items to cart');
+            enqueueSnackbar('Please login to add items to cart',{variant:'info'});
             return;
         }
 
@@ -34,8 +35,6 @@ export default function RecipeReviewCard({source,content,item}) {
             menuItemId: item._id,
         }
 
-        console.log(data)
-
         addToCart({
           variables: {
             ...data
@@ -43,10 +42,10 @@ export default function RecipeReviewCard({source,content,item}) {
         })
           .then((response) => {
             dispatch({ type: 'ADD_TO_CART', payload: data })
-            console.log('Item added to cart:', response.data.addToCart);
+            enqueueSnackbar('Item added to cart:', { variant: 'success' });
           })
           .catch((error) => {
-            console.error('Error adding item to cart:', error);
+            enqueueSnackbar('Error adding item to cart:', { variant: 'error'});
           });
       };
 
